@@ -13,14 +13,17 @@ use Cake\Console\Shell;
 class UserShell extends Shell {
 
     private $spec = [];
+    private $counter = 0;
 
     public function initialize() {
         parent::initialize();
         $this->loadModel('Users');
+        $this->loadModel('UsersSpecializations');
 
         $specializations = $this->Users->Specializations->find('list', ['limit' => 200]);
+        //$this->spec = $specializations;
         foreach ($specializations as $key=>$item) {
-            $this->spec[$key] = $item;
+            $this->spec[$key] = strtolower($item);
         }
     }
 
@@ -58,12 +61,21 @@ class UserShell extends Shell {
         }
 
         $handle = fopen($filename, 'r');
-        $txtline = fgets($handle, 4096);
+        $i = 0;
+        while (!feof($handle)) {
+            $i++;
+            $txtline = fgets($handle, 4096);
 
-        $oneU = $this->parsUserInfo($txtline);
+            // Pars user data from file line
+            $oneU   = $this->parsUserInfo($txtline);
+            // Save new user
+            $userId = $this->saveUserInfo($oneU);
+            // Save specialisation
+            $this->saveSpecialisations($userId, $oneU[1]);
+        }
 
+        $this->out('Parsed: '.$i.'. Saved: '.$this->counter);
         //we($oneU);
-
     }
 
     /**
@@ -84,44 +96,68 @@ class UserShell extends Shell {
         $result['email'] = trim($result[2]);
         $result['gmail'] = trim($result[3]);
         $result['skype'] = trim($result[4]);
+        $result['table_num'] = trim($result[5]);
 
         // autofill
         $result['username'] = explode('@', $result['email'])[0];
         $result['password'] = 'empty password';
 
-        // Save specialisation
-        $this->saveSpecialisations(1, $result[1]);
-        //exit;
-
-        /*$user = $this->Users->newEntity();
-        $user = $this->Users->patchEntity($user, $result);
-        if ($this->Users->save($user)) {
-
-        } else {
-
-            $this->out('Error! User not saved: ' . $result['email']);
-        }
-        we($user);*/
-
         return $result;
     }
 
     /**
-     * Розпізнати і зберегти спеціалізацію працівника
-     * - якщо нема, тоді нема
+     * Save user info to the database
+     * @param $user_data
+     */
+    private function saveUserInfo($userInfo = []) {
+
+        $user = $this->Users->newEntity();
+        $user = $this->Users->patchEntity($user, $userInfo);
+        if ($this->Users->save($user)) {
+            $this->counter++;
+            return $user['id'];
+        } else {
+            $this->out('Error! User not saved: ' . $userInfo['email']);
+            $this->out(print_r($user));
+        }
+
+        return false;
+    }
+
+    /**
+     * Define the user specialisations and save connections
      */
     private function saveSpecialisations($userId, $spec) {
         $specId = null;
 
-        $this->out($spec);
+        if (empty($spec)) return false;
+
+        $spec = strtolower($spec);
+
         foreach($this->spec as $k=>$item) {
-            if (strrpos($item, $spec)) {
+            $res = strpos($item, $spec);
+            if (is_numeric($res)) {
                 $specId = $k;
             }
         }
 
-        if (!empty($specId)) {
+        /*if (!empty($specId)) {
             $this->out($spec .': '.$this->spec[$specId]);
+        }*/
+
+        if (!empty($specId) && !empty($userId)) {
+            $connection = $this->UsersSpecializations->newEntity();
+            $connection['user_id'] = $userId;
+            $connection['specialization_id'] = $specId;
+            if ($this->UsersSpecializations->save($connection)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            $this->out('Error! Connection not save for user ID: ['.$userId.'] and spec: '.$spec);
+
+            return false;
         }
     }
 }

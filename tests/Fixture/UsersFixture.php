@@ -29,6 +29,7 @@ class UsersFixture extends TestFixture
         'ssh_key' => ['type' => 'text', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'created' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'modified' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
+        'table_num' => ['type' => 'integer', 'length' => 3, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
         ],
@@ -54,10 +55,11 @@ class UsersFixture extends TestFixture
             'email' => 'Lorem ipsum dolor sit amet',
             'gmail' => 'Lorem ipsum dolor sit amet',
             'skype' => 'Lorem ipsum dolor sit amet',
-            'birthday' => '2016-01-10',
+            'birthday' => '2016-01-11',
             'ssh_key' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-            'created' => '2016-01-10 08:33:45',
-            'modified' => '2016-01-10 08:33:45'
+            'created' => '2016-01-11 21:54:04',
+            'modified' => '2016-01-11 21:54:04',
+            'table_num' => 1
         ],
     ];
 }

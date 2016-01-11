@@ -24,6 +24,7 @@ class AddTables extends AbstractMigration
             ->addColumn('skype', 'string', ['limit' => '50'])
             ->addColumn('birthday', 'date')
             ->addColumn('ssh_key', 'text')
+            ->addColumn('table_num', 'integer', ['limit'=>4])
             ->addColumn('created', 'datetime')
             ->addColumn('modified', 'datetime')
             ->create();
@@ -91,6 +92,7 @@ class AddTables extends AbstractMigration
         // Table to save a connections users with specializations
         $table = $this->table('users_specializations');
         $table->addColumn('user_id', 'integer', ['limit' => '11'])
+            ->addColumn('specialization_id', 'integer', ['limit' => '11'])
             ->addColumn('descriptions', 'text')
             ->addColumn('created', 'datetime')
             ->addColumn('modified', 'datetime')

@@ -83,22 +83,25 @@ class UsersTable extends Table
             ->requirePresence('email', 'create')
             ->notEmpty('email');
 
-        $validator
+        /*$validator
             ->requirePresence('gmail', 'create')
-            ->notEmpty('gmail');
+            ->notEmpty('gmail');*/
 
-        $validator
+        /*$validator
             ->requirePresence('skype', 'create')
-            ->notEmpty('skype');
+            ->notEmpty('skype');*/
 
         $validator
             ->add('birthday', 'valid', ['rule' => 'date'])
-//            ->requirePresence('birthday', 'create')
-            ->notEmpty('birthday');
+            ->allowEmpty('birthday');
 
-//        $validator
-//            ->requirePresence('ssh_key', 'create')
-//            ->notEmpty('ssh_key');
+        /*$validator
+            ->requirePresence('ssh_key', 'create')
+            ->notEmpty('ssh_key');*/
+
+        $validator
+            ->add('table_num', 'valid', ['rule' => 'numeric'])
+            ->allowEmpty('table_num');
 
         return $validator;
     }

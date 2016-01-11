@@ -4,26 +4,18 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * User Entity.
+ * UsersSpecialization Entity.
  *
  * @property int $id
- * @property string $username
- * @property string $password
- * @property string $first_name
- * @property string $last_name
- * @property string $email
- * @property string $gmail
- * @property string $skype
- * @property \Cake\I18n\Time $birthday
- * @property string $ssh_key
+ * @property int $user_id
+ * @property \App\Model\Entity\User $user
+ * @property string $descriptions
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
- * @property int $table_num
- * @property \App\Model\Entity\Position[] $positions
- * @property \App\Model\Entity\Skill[] $skills
- * @property \App\Model\Entity\Specialization[] $specializations
+ * @property int $specialization_id
+ * @property \App\Model\Entity\Specialization $specialization
  */
-class User extends Entity
+class UsersSpecialization extends Entity
 {
 
     /**

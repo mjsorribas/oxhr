@@ -201,3 +201,15 @@ DispatcherFactory::add('ControllerFactory');
  */
 Type::build('date')->useLocaleParser();
 Type::build('datetime')->useLocaleParser();
+
+
+function wln($var = 'on') {
+    echo '<pre>';
+    print_r($var);
+    echo '</pre>';
+}
+
+function we($var = 'ok') {
+    wln($var);
+    exit;
+}

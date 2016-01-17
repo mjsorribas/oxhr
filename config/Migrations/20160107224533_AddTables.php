@@ -34,6 +34,8 @@ class AddTables extends AbstractMigration
         $table = $this->table('skills');
         $table->addColumn('skills_groups_id', 'integer', ['limit'=>'11'])
             ->addColumn('name', 'string', ['limit'=>'32'])
+            ->addColumn('link', 'string', ['limit'=>'255'])
+            ->addColumn('description', 'text')
             ->addColumn('created', 'datetime')
             ->addColumn('modified', 'datetime')
             ->create();
@@ -41,6 +43,7 @@ class AddTables extends AbstractMigration
         // Create table "skills_groups"
         $table = $this->table('skills_groups');
         $table->addColumn('name', 'string', ['limit'=>'32'])
+            ->addColumn('description', 'text')
             ->addColumn('created', 'datetime')
             ->addColumn('modified', 'datetime')
             ->create();
@@ -77,6 +80,9 @@ class AddTables extends AbstractMigration
         $table->addColumn('user_id', 'integer', ['limit'=>'11'])
             ->addColumn('skill_id', 'integer', ['limit'=>'11'])
             ->addColumn('level', 'integer', ['limit'=>'1'])
+            ->addColumn('description', 'text')
+            ->addColumn('project_repo', 'string', ['limit'=>'255'])
+            ->addColumn('project_link', 'string', ['limit'=>'255'])
             ->addColumn('created', 'datetime')
             ->addColumn('modified', 'datetime')
             ->create();

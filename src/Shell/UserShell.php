@@ -12,7 +12,16 @@ use Cake\Console\Shell;
 
 class UserShell extends Shell {
 
+    /**
+     * The list of specialisations
+     * @var array
+     */
     private $spec = [];
+
+    /**
+     * The counter of iterations
+     * @var int
+     */
     private $counter = 0;
 
     public function initialize() {
@@ -21,12 +30,16 @@ class UserShell extends Shell {
         $this->loadModel('UsersSpecializations');
 
         $specializations = $this->Users->Specializations->find('list', ['limit' => 200]);
-        //$this->spec = $specializations;
+
         foreach ($specializations as $key=>$item) {
             $this->spec[$key] = strtolower($item);
         }
     }
 
+    /**
+     * Show information about user by username
+     * @return bool|int
+     */
     public function show()
     {
         $this->out('Show user information');
@@ -44,11 +57,11 @@ class UserShell extends Shell {
     }
 
     /**
-     * import information of users from CSV-file, to DB
+     * Smport information of users from CSV-file, to DB
      */
     public function load () {
 
-        $filename = '';
+        $filename = null;
 
         if (empty($this->args[0])) {
             return $this->out('Error! File name not present');
@@ -75,7 +88,8 @@ class UserShell extends Shell {
         }
 
         $this->out('Parsed: '.$i.'. Saved: '.$this->counter);
-        //we($oneU);
+
+        fclose($handle);
     }
 
     /**

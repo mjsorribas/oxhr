@@ -14,7 +14,7 @@ use Cake\ORM\Entity;
  * @property int $level
  * @property string $description
  * @property string $project_repo
- * @property string $prokect_link
+ * @property string $project_link
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
  */

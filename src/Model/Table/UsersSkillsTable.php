@@ -56,20 +56,19 @@ class UsersSkillsTable extends Table
 
         $validator
             ->add('level', 'valid', ['rule' => 'numeric'])
-            ->requirePresence('level', 'create')
             ->notEmpty('level');
 
-        $validator
-            ->requirePresence('description', 'create')
-            ->notEmpty('description');
+//        $validator
+//            ->requirePresence('description', 'create')
+//            ->notEmpty('description');
 
         $validator
-            ->requirePresence('project_repo', 'create')
-            ->notEmpty('project_repo');
+            ->add('project_repo', 'valid', ['rule' => 'url'])
+            ->allowEmpty('project_repo');
 
         $validator
-            ->requirePresence('prokect_link', 'create')
-            ->notEmpty('prokect_link');
+            ->add('project_link', 'valid', ['rule' => 'url'])
+            ->allowEmpty('project_link');
 
         return $validator;
     }

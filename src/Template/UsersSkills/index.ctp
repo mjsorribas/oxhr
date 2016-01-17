@@ -1,11 +1,9 @@
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Users Skill'), ['action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Skills'), ['controller' => 'Skills', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Skill'), ['controller' => 'Skills', 'action' => 'add']) ?></li>
+
     </ul>
 </nav>
 <div class="usersSkills index large-9 medium-8 columns content">
@@ -17,27 +15,24 @@
                 <th><?= $this->Paginator->sort('user_id') ?></th>
                 <th><?= $this->Paginator->sort('skill_id') ?></th>
                 <th><?= $this->Paginator->sort('level') ?></th>
-                <th><?= $this->Paginator->sort('project_repo') ?></th>
-                <th><?= $this->Paginator->sort('prokect_link') ?></th>
-                <th><?= $this->Paginator->sort('created') ?></th>
-                <th class="actions"><?= __('Actions') ?></th>
+                <th width="50%"><?= $this->Paginator->sort('description') ?></th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($usersSkills as $usersSkill): ?>
             <tr>
                 <td><?= $this->Number->format($usersSkill->id) ?></td>
-                <td><?= $usersSkill->has('user') ? $this->Html->link($usersSkill->user->id, ['controller' => 'Users', 'action' => 'view', $usersSkill->user->id]) : '' ?></td>
+                <td><?= $usersSkill->has('user') ? $this->Html->link($usersSkill->user->first_name.' '.$usersSkill->user->last_name, ['controller' => 'Users', 'action' => 'view', $usersSkill->user->id]) : '' ?></td>
                 <td><?= $usersSkill->has('skill') ? $this->Html->link($usersSkill->skill->name, ['controller' => 'Skills', 'action' => 'view', $usersSkill->skill->id]) : '' ?></td>
                 <td><?= $this->Number->format($usersSkill->level) ?></td>
-                <td><?= h($usersSkill->project_repo) ?></td>
-                <td><?= h($usersSkill->prokect_link) ?></td>
-                <td><?= h($usersSkill->created) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $usersSkill->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $usersSkill->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $usersSkill->id], ['confirm' => __('Are you sure you want to delete # {0}?', $usersSkill->id)]) ?>
+                <td>
+                    <?= !empty($usersSkill->description)?h($usersSkill->description):'&mdash;' ?> <br >
+                    <span style="font-size: 12px; color: #999;">
+                    <?= !empty($usersSkill->project_repo)?$this->Html->link(__('Репозиторий'), $usersSkill->project_repo):__('Нет репозиторий') ?> |
+                    <?= !empty($usersSkill->project_link)?$this->Html->link(__('Проект'), $usersSkill->project_link):__('Нет ссылки на проект') ?>
+                    </span>
                 </td>
+
             </tr>
             <?php endforeach; ?>
         </tbody>

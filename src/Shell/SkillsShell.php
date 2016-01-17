@@ -191,7 +191,13 @@ class SkillsShell extends Shell {
         $skill = $this->UsersSkills->newEntity();
         $skill = $this->UsersSkills->patchEntity($skill, $uskils);
 
-        return $this->UsersSkills->save($skill);
+        if ($this->UsersSkills->save($skill)) {
+            return $this->out($skill['id']);
+        } else {
+            print_r($skill);
+        }
+
+        return false;
     }
 
     /**

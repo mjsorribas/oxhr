@@ -16,7 +16,13 @@ class UsersSkillsControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'app.users_skills'
+        'app.users_skills',
+        'app.users',
+        'app.positions',
+        'app.users_positions',
+        'app.skills',
+        'app.specializations',
+        'app.users_specializations'
     ];
 
     /**

@@ -18,6 +18,7 @@ class SkillsShell extends Shell {
 
         $this->loadModel('Users');
         $this->loadModel('Skills');
+        $this->loadModel('UsersSkills');
     }
 
     /**
@@ -139,10 +140,13 @@ class SkillsShell extends Shell {
     /**
      * Load information about users skills to the database
      * Data from this file https://docs.google.com/spreadsheets/d/1xX7H8xuoICtYt1sJLZjWGYWqFiqdbp4lkQy2GQ_V7oM/edit#gid=0
+     *
+     * Example: bin\cake skills loaduserssk tmp\summary-of-skills.csv
+     *
      * @param CSV-file
      * @return true
      */
-    public function loadusers () {
+    public function loaduserssk () {
         if (empty($this->args[0])) {
             return $this->out('Error! File name not present');
         } else {
@@ -167,24 +171,47 @@ class SkillsShell extends Shell {
     }
 
     /**
-     * @param string $info_line - string with user skills
+     * @param $info_line - string with user skills
      * @return bool
      */
-    private function saveUserSkill(string $info_line ) {
-        $result = false;
+    private function saveUserSkill($info_line ) {
         $skLine = $this->parsCSVString($info_line);
+
+        $this->out($info_line);
 
         $uskils = [
             'user_id'   => $this->getUserID($skLine['username']),
             'skill_id'  => $this->getSkillID($skLine['skill']),
+            'level'         => $skLine['level'],
+            'description'   => $skLine['user_description'],
+            'project_repo'  => $skLine['project_repo'],
+            'project_link'  => $skLine['project_link'],
         ];
 
+        $skill = $this->UsersSkills->newEntity();
+        $skill = $this->UsersSkills->patchEntity($skill, $uskils);
 
-        return $result;
+        return $this->UsersSkills->save($skill);
     }
 
-    private function getSkillID(string $skill_name) {
+    /**
+     * Get skills ID by name
+     * @param $skill_name - the name fro
+     * @return bool
+     */
+    private function getSkillID($skill_name) {
 
+        $skill = $this->Skills->find('all', [
+            'fields'    => ['id'],
+            'conditions'    => ['name' => $skill_name],
+            'contain'   => [],
+        ])->first();
+
+        if (!empty($skill)) {
+            return $skill['id'];
+        } else {
+            return false;
+        }
 
     }
 
@@ -192,14 +219,15 @@ class SkillsShell extends Shell {
      * @param string $info_line - line from csv file
      * @return array
      */
-    private function parsCSVString(string $info_line) {
-        $fnames = ['username', 'skills_group', 'skill', 'level', 'skill_link', 'user_description', 'project_repo', 'project_link'];
+    private function parsCSVString($info_line) {
+        $fnames = ['username', 'skills_group', 'skill', 'level', 'skill_link', 'user_description', 'project_repo', 'project_link', 'coefficient', '9', '10', '11', '12'];
 
         $tmp = explode(',', $info_line);
+        $res = [];
         foreach ($tmp as $key=>$val) {
-            $tmp[$fnames[$key]] = trim($val);
+            $res[$fnames[$key]] = trim($val);
         }
-        return $tmp;
+        return $res;
     }
 
     /**

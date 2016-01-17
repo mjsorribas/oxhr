@@ -74,9 +74,7 @@ class AddTables extends AbstractMigration
         // Таблицы связей
 
         // Create table "users_skills"
-        $table = $this->table('users_skills', [
-            'id' => false
-        ]);
+        $table = $this->table('users_skills');
         $table->addColumn('user_id', 'integer', ['limit'=>'11'])
             ->addColumn('skill_id', 'integer', ['limit'=>'11'])
             ->addColumn('level', 'integer', ['limit'=>'1'])

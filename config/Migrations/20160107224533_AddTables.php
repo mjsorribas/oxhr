@@ -24,6 +24,7 @@ class AddTables extends AbstractMigration
             ->addColumn('skype', 'string', ['limit' => '50'])
             ->addColumn('birthday', 'date')
             ->addColumn('ssh_key', 'text')
+            ->addColumn('hash', 'text')
             ->addColumn('table_num', 'integer', ['limit'=>4])
             ->addColumn('created', 'datetime')
             ->addColumn('modified', 'datetime')

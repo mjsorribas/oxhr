@@ -109,4 +109,11 @@ class UsersSkillsController extends AppController
         }
         return $this->redirect(['action' => 'index']);
     }
+
+    /**
+     * Form to add new and update existed users skills
+     */
+    public function mySkills() {
+
+    }
 }

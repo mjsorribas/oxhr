@@ -119,4 +119,27 @@ class UsersTable extends Table
         $rules->add($rules->isUnique(['email']));
         return $rules;
     }
+
+    /**
+     * Find user by email or gmail
+     * @param $email
+     */
+    public function getByEmail($email) {
+        $email = trim($email);
+
+        wln($email);
+        $user = $this->find()
+            ->where([
+                'OR' => [['email' => $email], ['gmail'=>$email]]
+            ])
+            ->contain([])
+            ->toArray();
+
+        if (!empty($user[0])) {
+            return $user[0];
+        } else {
+            $this->errorMessage[] = __('Электронный адрес не "{0}" найден', $email);
+            return false;
+        }
+    }
 }

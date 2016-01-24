@@ -29,6 +29,14 @@ class AppController extends Controller
 {
 
     /**
+     * @param Event $event
+     */
+    public function beforeFilter(Event $event)
+    {
+        $this->Auth->allow(['index', 'view', 'display']);
+    }
+
+    /**
      * Initialization hook method.
      *
      * Use this method to add common initialization code like loading components.
@@ -43,6 +51,17 @@ class AppController extends Controller
 
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
+        $this->loadComponent('Auth', [
+            'logoutRedirect' => [
+                'controller' => 'Users',
+                'action' => 'login',
+                'home'
+            ]
+        ]);
+        $this->loadComponent('Cookie',[
+            //'secure'    => true,
+            'expires'   => '+1 months',
+        ]);
     }
 
     /**

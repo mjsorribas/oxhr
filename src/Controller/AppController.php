@@ -28,6 +28,14 @@ use Cake\Event\Event;
 class AppController extends Controller
 {
 
+    const SES_BACK_URL                  = 'BACK_URL';
+
+    const COUNTER_SELECT_TRF_BACK_URK   = 'COUNTER_SELECT_TRF_BACK_URK';
+
+    const COOKIE_UID = 'cuid';
+
+    const COOKIE_EXPIRATION_TIME = '+1 month';
+
     /**
      * @param Event $event
      */
@@ -56,6 +64,11 @@ class AppController extends Controller
                 'controller' => 'Users',
                 'action' => 'login',
                 'home'
+            ],
+            'authenticate' => [
+                'Form' => [
+                    'fields' => ['username' => 'username', 'password' => 'password']
+                ]
             ]
         ]);
         $this->loadComponent('Cookie',[

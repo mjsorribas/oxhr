@@ -3,6 +3,7 @@ namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
 use Cake\Utility\Security;
+use Cake\Auth\DefaultPasswordHasher;
 
 /**
  * User Entity.
@@ -30,10 +31,10 @@ class User extends Entity
     /**
      * Arguments to generate the password
      */
-    static public $pass_symbols = array();
-    static private $pass_length = 12;
-    static private $spec_symbols = array('(','_','!','#','$','%',')','-', '~','^','@','*');
-    static private $symbols_count = 0;
+    static public $pass_symbols     = [];
+    static private $pass_length     = 16;
+    static private $spec_symbols    = ['(','_','!','#','$','%',')','-', '~','^','@','*'];
+    static private $symbols_count   = 0;
 
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -50,6 +51,15 @@ class User extends Entity
     ];
 
     /**
+     * hashing password before save
+     * @param $password
+     * @return mixed
+     */
+    protected function _setPassword($password){
+        return (new DefaultPasswordHasher)->hash($password);
+    }
+
+    /**
      * Generate random hash
      * @param $hash
      * @return string
@@ -59,21 +69,22 @@ class User extends Entity
     }
 
     /**
+     * $settings array - settings to generate the password
      * Generate random password
      */
     public static function getRandomPass($settings = []) {
         $default = ['use-numbers' => true, 'use-spec' => false];
-        $settings = $default + $settings;
+        $settings = array_intersect_key($settings + $default, $default);
 
-        self::$pass_length = mt_rand(8,12);
-        self::$spec_symbols = array_merge(range('a', 'z'), range('A', 'Z'));
+        self::$pass_length = mt_rand(8,self::$pass_length);
+        self::$pass_symbols = array_merge(range('a', 'z'), range('A', 'Z'));
 
         if (!empty($settings['use-numbers'])) {
             self::$pass_symbols = array_merge(range(0,9), self::$pass_symbols, range(0,9));
         }
 
         if (!empty($settings['use-spec'])) {
-            self::$pass_symbols = array_merge(self::$spec_symbols, self::$pass_symbols, self::$spec_symbols);
+            self::$pass_symbols = array_merge(self::$spec_symbols, self::$pass_symbols);
         }
 
         self::$symbols_count = count(self::$pass_symbols);
@@ -94,4 +105,14 @@ class User extends Entity
 
         return join('',$result);
     }
+
+    /**
+     * Generate number to reset the randomizer
+     * @return float
+     */
+    static private function make_seed() {
+        list($usec, $sec) = explode(' ', microtime());
+        return (float) $sec + ((float) $usec * 100000);
+    }
+
 }

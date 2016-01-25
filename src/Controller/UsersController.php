@@ -52,7 +52,7 @@ class UsersController extends AppController
             if ($user) {
                 $this->Auth->setUser($user);
                 // якщо залогінили - то треба встановити потрібну куку
-                $this->Cookie->write(self::COOKIE_UID, $user['cookieId']);
+//                $this->Cookie->write(self::COOKIE_UID, $user['cookieId']);
                 return $this->redirect($this->Auth->redirectUrl());
             }
             $this->Flash->error(__('Неправильний логін чи пароль. Спробуйте ще раз!'));
@@ -108,12 +108,25 @@ class UsersController extends AppController
 
         if ($this->request->session()->check($usrSession) && empty($this->request->data)) {
             // Вывести поле для ввода нового пароля
-            $password = User::getRandomPass();
+            $password = User::getRandomPass(['use-numbers' => true, 'use-spec' => true]);
             $this->set(compact('password'));
 
-        } elseif ($this->request->session()->check($usrSession) && !empty($this->request->data)) {
+        } elseif ($this->request->session()->check($usrSession) && !empty($this->request->data['password'])) {
             // Сохранить новый пароль
+            $user = $this->request->session()->read($usrSession);
 
+            $user = $this->Users->patchEntity($user, [
+                'password'  => trim($this->request->data['password']),
+                'hash'      => ''
+            ]);
+
+            if ($this->Users->save($user)) {
+                $this->request->session()->delete($usrSession);
+                $this->Flash->success(__('Пароль успешно изменен!'));
+                return $this->redirect(['action' => 'login']);
+            } else {
+                $this->Flash->error(__('Ошибка при сохранении изменений'));
+            }
         }
     }
 

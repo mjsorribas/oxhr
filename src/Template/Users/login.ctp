@@ -8,4 +8,9 @@
     </fieldset>
     <?= $this->Form->button(__('Login')); ?>
     <?= $this->Form->end() ?>
+
+    <div class="additional-link">
+        <?= $this->Html->link(__('Восстановить пароль'), ['controller'=>'users', 'action'=>'recovery'])?>
+    </div>
+
 </div>

@@ -123,11 +123,10 @@ class UsersTable extends Table
     /**
      * Find user by email or gmail
      * @param $email
+     * @return boolean
      */
     public function getByEmail($email) {
         $email = trim($email);
-
-        wln($email);
         $user = $this->find()
             ->where([
                 'OR' => [['email' => $email], ['gmail'=>$email]]

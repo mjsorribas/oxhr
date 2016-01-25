@@ -17,10 +17,13 @@ use Cake\MAiler\Email;
 class UsersController extends AppController
 {
 
+    private $recoveryLink = '/users/chngp';
+    private $haskVar      = 'byhash';
+
     public function beforeFilter(Event $event)
     {
 //        parent::beforeFilter($event);
-        $this->Auth->allow(['add', 'signup', 'recovery']);
+        $this->Auth->allow(['add', 'signup', 'recovery', 'chngp']);
     }
 
 
@@ -61,43 +64,11 @@ class UsersController extends AppController
     }
 
     /**
-     * Розлогінити користувача з сайту
+     * Logout user
      */
     public function logout() {
-//        $this->Cookie->delete(self::COOKIE_UID);
+//      $this->Cookie->delete(self::COOKIE_UID);
         return $this->redirect($this->Auth->logout());
-    }
-
-    /**
-     * Реэстрація нових користувачів
-     * @return \Cake\Network\Response|void
-     */
-    public function signup() {
-
-        $uid = $this->Auth->user('id');
-        $user = !empty($uid)?$this->Users->get($uid):null;
-
-        if (!empty($user->email)) {
-            $this->Flash->success(__('Ви вже зареєстровані'));
-            $this->redirect('/');
-        } else {
-            $this->Flash->success(__('Можете зареєструватися'));
-        }
-
-        if ($this->request->is(['patch', 'post', 'put'])) {
-
-            $this->request->data['hash'] = User::getHash($this->request->data['email'].$user->username);
-            $this->request->data['password'] = User::getRandomPass();
-            $user = $this->Users->patchEntity($user, $this->request->data);
-
-            if ($this->Users->save($user)) {
-                // Вислати посилання для підтвердження і пароль
-                $this->Flash->success(__('Регестрація завершена вдало.'));
-                //return $this->redirect('/');
-            }
-            $this->Flash->error(__('Помилака при реєстрації.'));
-        }
-        $this->set('user', $user);
     }
 
     /**
@@ -106,35 +77,78 @@ class UsersController extends AppController
     public function recovery() {
         $result = false;
 
-        we($this->request->query);
-
         if (!empty($this->request->data)) {
-            if (!empty($this->request->data['email'])) {
-                $user = $this->Users->getByEmail($this->request->data['email']);
-                if (!empty($user)) {
-                    $result =  true;
-                    $this->sendRecoveryEmail($user, $this->request->data['email']);
-                } else {
-                    $this->Flash->error(__('Электронна пошта не знайдена'));
-                }
-            } else {
-                $this->Flash->error(__('Адрес електронной почты не найден'));
-            }
+            $result = $this->checkRecovery($this->request->data);
         }
         $this->set(compact('result'));
+    }
+
+    /**
+     * Page with ability change password
+     */
+    public function chngp() {
+
+        $usrSession = 'ddf398clal39';
+
+        if (!empty($this->request->query['byhash'])) {
+
+            $user = $this->Users->find('all', [
+                'conditions' => ['hash' =>$this->request->query['byhash']],
+                'contain' => []
+            ])->toArray();
+
+            if (!empty($user[0])) {
+                $this->request->session()->write($usrSession, $user[0]);
+                $sess = $this->request->session()->read($usrSession);
+                $this->redirect('/users/chngp');
+            } else {
+                $this->Flash->error(__('Ваш ключ восстновления не действительній'));
+            }
+        }
+
+        if ($this->request->session()->check($usrSession) && empty($this->request->data)) {
+            // Вывести поле для ввода нового пароля
+            $password = User::getRandomPass();
+            $this->set(compact('password'));
+
+        } elseif ($this->request->session()->check($usrSession) && !empty($this->request->data)) {
+            // Сохранить новый пароль
+
+        }
+    }
+
+    /**
+     * Found user by email and send email
+     * @param $data - array with user email
+     * @return bool
+     */
+    private function checkRecovery($data) {
+        $result = false;
+        if (!empty($data['email'])) {
+            $user = $this->Users->getByEmail($data['email']);
+            if (!empty($user)) {
+                $result =  true;
+                $this->sendRecoveryEmail($user, $data['email']);
+            } else {
+                $this->Flash->error(__('Электронна пошта не знайдена'));
+            }
+        } else {
+            $this->Flash->error(__('Адрес електронной почты не найден'));
+        }
+        return $result;
     }
 
     /**
      * Send email for recovery to customer
      */
     private function sendRecoveryEmail($user, $email) {
-//      we($user['username'].$user['first_name'].$user['gmail'].$user['skype']);
+
         $hash = User::getHash($user['username'].$user['first_name'].$user['gmail'].$user['skype']);
         $user = $this->Users->patchEntity($user, [
             'hash'  => $hash,
         ]);
 
-        $recovery_link = 'http://'.$this->request->domain().'/users/recovery?byhash='.$hash;
+        $recovery_link = 'http://'.$this->request->domain(). $this->recoveryLink .'?'.$this->haskVar.'='.$hash;
 
         if ($this->Users->save($user)) {
 

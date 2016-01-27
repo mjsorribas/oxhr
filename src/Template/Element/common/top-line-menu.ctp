@@ -110,10 +110,14 @@
 
 
         <li>
-            <?= $this->Html->link('<i class="fa fa-sign-out"></i>&nbsp;'.__('Log out'),
-                ['controller'=>'users', 'action'=>'logout'],
-                ['escape' => false]
-            );?>
+            <?php  if(!$authUser):
+                $this->Html->link('<i class="fa fa-sign-out"></i>&nbsp;'.__('Sign out'),
+                    ['controller'=>'users', 'action'=>'logout'],
+                    ['escape' => false] );
+            else:
+                $this->Html->link(''._('Sing In'), ['controller'=>'users', 'action'=>'login'],
+                    ['escape' => false] );
+            endif;?>
         </li>
         <!--<li>
             <a class="right-sidebar-toggle">

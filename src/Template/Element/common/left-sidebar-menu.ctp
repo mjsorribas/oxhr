@@ -2,6 +2,7 @@
     <div class="sidebar-collapse">
         <ul class="nav metismenu" id="side-menu">
             <li class="nav-header">
+                <?php  if($authUser): ?>
                 <div class="dropdown profile-element">
                     <span>
                         <img alt="image" class="img-circle" src="<?= $this->request->webroot?>img/users/profile_small.jpg">
@@ -22,6 +23,9 @@
                         <li><a href="login.html">Logout</a></li>
                     </ul>
                 </div>
+                <?php else: ?>
+                Нужно залогиниться
+                <?php endif; ?>
                 <div class="logo-element">
                     IN+
                 </div>

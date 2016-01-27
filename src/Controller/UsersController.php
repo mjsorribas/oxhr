@@ -23,7 +23,7 @@ class UsersController extends AppController
     public function beforeFilter(Event $event)
     {
 //        parent::beforeFilter($event);
-        $this->Auth->allow(['add', 'signup', 'recovery', 'chngp']);
+        $this->Auth->allow(['login', 'signup', 'recovery', 'chngp']);
     }
 
 
@@ -61,6 +61,8 @@ class UsersController extends AppController
         $pass = 'adminP';
         $passhash = (new DefaultPasswordHasher)->hash($pass);
         $this->set(compact('pass','passhash'));
+
+        $this->viewBuilder()->layout('notauthorize');
     }
 
     /**
@@ -82,6 +84,7 @@ class UsersController extends AppController
             $result = $this->checkRecovery($this->request->data);
         }
         $this->set(compact('result'));
+        $this->viewBuilder()->layout('notauthorize');
     }
 
     /**
@@ -129,6 +132,8 @@ class UsersController extends AppController
                 $this->Flash->error(__('Ошибка при сохранении изменений'));
             }
         }
+
+        $this->viewBuilder()->layout('notauthorize');
     }
 
     /**

@@ -42,15 +42,6 @@ class AppController extends Controller
     public $page_title = "Onix-Systems";
 
     /**
-     * @param Event $event
-     */
-    public function beforeFilter(Event $event)
-    {
-        $this->Auth->allow(['index', 'view', 'display']);
-
-    }
-
-    /**
      * Initialization hook method.
      *
      * Use this method to add common initialization code like loading components.
@@ -66,6 +57,10 @@ class AppController extends Controller
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
         $this->loadComponent('Auth', [
+            'loginAction' => [
+                'controller' => 'Users',
+                'action' => 'login',
+            ],
             'logoutRedirect' => [
                 'controller' => 'Users',
                 'action' => 'login',
@@ -84,6 +79,17 @@ class AppController extends Controller
     }
 
     /**
+     * @param Event $event
+     * @return null
+     */
+    public function beforeFilter(Event $event)
+    {
+        $this->Auth->deny();
+//        $this->Auth->allow(['index', 'view', 'display']);
+
+    }
+
+    /**
      * Before render callback.
      *
      * @param \Cake\Event\Event $event The beforeRender event.
@@ -92,11 +98,12 @@ class AppController extends Controller
     public function beforeRender(Event $event)
     {
         if (!array_key_exists('_serialize', $this->viewVars) &&
-            in_array($this->response->type(), ['application/json', 'application/xml'])
-        ) {
+            in_array($this->response->type(), ['application/json', 'application/xml']))
+        {
             $this->set('_serialize', true);
         }
 
+        $this->set('authUser', $this->Auth->user());
         $this->set('page_title', $this->page_title);
     }
 }

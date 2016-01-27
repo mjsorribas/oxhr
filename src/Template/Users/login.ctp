@@ -1,44 +1,36 @@
-<div class="col-lg-7">
-    <div class="ibox float-e-margins">
-        <div class="ibox-title">
-            <h5>Login Form</h5>
-            <div class="ibox-tools">
-                <a class="collapse-link">
-                    <i class="fa fa-chevron-up"></i>
-                </a>
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-wrench"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-user">
-                    <li><a href="#">Config option 1</a>
-                    </li>
-                    <li><a href="#">Config option 2</a>
-                    </li>
-                </ul>
-                <a class="close-link">
-                    <i class="fa fa-times"></i>
-                </a>
-            </div>
+<div class="middle-box text-center loginscreen animated fadeInDown">
+    <div>
+        <div>
+
+            <h1 class="logo-name">NX</h1>
+
         </div>
-        <div class="ibox-content">
-            <div class="row">
-                <div class="col-sm-6 b-r">
-                    <div role="form" lpformnum="1" _lpchecked="1">
-                        <?= $this->Flash->render('auth') ?>
-                        <?= $this->Form->create() ?>
-                        <legend><?= __('Please enter your username and password') ?></legend>
-                        <?= $this->Form->input('username', ['placeholder' => 'Username']) ?>
-                        <?= $this->Form->input('password') ?>
-                        <div>
-                        <?= $this->Form->button(__('Login'), ['class'=>'btn btn-sm btn-primary pull-right m-t-n-xs']); ?>
-                        </div>
-                        <?= $this->Form->end() ?>
-                        <div class="additional-link">
-                            <?= $this->Html->link(__('Восстановить пароль'), ['controller'=>'users', 'action'=>'recovery'])?>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <h3>Welcome to ONIX</h3>
+        <p></p>
+        <p>Login in. To see it in action.</p>
+
+        <div role="form" lpformnum="1" _lpchecked="1">
+            <?= $this->Flash->render('auth') ?>
+            <?= $this->Form->create('', ['class' => 'm-t']) ?>
+            <?= $this->Form->input('username', ['label'=>false, 'id'=>'username', 'placeholder' => 'Username', 'required'=>"", 'autocomplete'=>"off"]) ?>
+            <?= $this->Form->input('password', ['label'=>false, 'placeholder' => "Password", 'required'=>"", 'autocomplete'=>"off" ]) ?>
+            <?= $this->Form->button(__('Login'), ['class'=>'btn btn-primary block full-width m-b']); ?>
+
+            <?= $this->Html->link('<small>'.__('Восстановить пароль').'</small>', ['controller'=>'users', 'action'=>'recovery'], ['escape'=>false])?>
+            <p class="text-muted text-center"><small>Do not have an account?
+                    <?= $this->Html->link(__('Request an access'), 'mailto:xain@onix-systems.com')?></small></p>
+
+            <?= $this->Form->end() ?>
+            <p class="m-t"> <small>Inspinia we app framework base on Bootstrap 3 <br>
+                    <?= $this->Html->link('@xainse', 'https://twitter.com/xainse', ['target' => '_blank']);?> &copy; 2015&mdash;<?= date('Y');?></small> </p>
         </div>
-    </div>
+
 </div>
+</div>
+<script>
+    $(function(){
+        $("#username").focus();
+    });
+</script>
+</body>
+</html>

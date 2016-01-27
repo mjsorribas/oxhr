@@ -4,7 +4,7 @@
             <li class="nav-header">
                 <div class="dropdown profile-element">
                     <span>
-                        <img alt="image" class="img-circle" src="img/users/profile_small.jpg">
+                        <img alt="image" class="img-circle" src="<?= $this->request->webroot?>img/users/profile_small.jpg">
                     </span>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="clear">

@@ -37,11 +37,17 @@ class AppController extends Controller
     const COOKIE_EXPIRATION_TIME = '+1 month';
 
     /**
+     * Site Meta Data
+     */
+    public $page_title = "Onix-Systems";
+
+    /**
      * @param Event $event
      */
     public function beforeFilter(Event $event)
     {
         $this->Auth->allow(['index', 'view', 'display']);
+
     }
 
     /**
@@ -90,5 +96,7 @@ class AppController extends Controller
         ) {
             $this->set('_serialize', true);
         }
+
+        $this->set('page_title', $this->page_title);
     }
 }

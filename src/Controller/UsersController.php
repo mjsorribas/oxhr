@@ -76,6 +76,7 @@ class UsersController extends AppController
      */
     public function recovery() {
         $result = false;
+        $this->page_title = __('Восстановление доступа');
 
         if (!empty($this->request->data)) {
             $result = $this->checkRecovery($this->request->data);

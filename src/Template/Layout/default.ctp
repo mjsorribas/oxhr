@@ -22,7 +22,10 @@
     <?= $this->element('common/left-sidebar-menu');?>
     <div id="page-wrapper" class="gray-bg dashbard-1" style="min-height: 100%;">
         <?= $this->element('common/top-line-menu'); ?>
-        <div class="row  border-bottom white-bg dashboard-header">
+        <?= $this->element('common/breadcrumbs', ['page_title'=>$page_title]); ?>
+
+
+        <div class="wrapper wrapper-content animated fadeInRight">
             <?= $this->fetch('content');?>
         </div>
 

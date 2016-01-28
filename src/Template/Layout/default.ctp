@@ -7,7 +7,7 @@
 
         <title><?= $this->fetch('title') ?></title>
         <?= $this->Html->meta('icon') ?>
-        <?= $this->Html->css(['bootstrap.min', 'font-awesome.min', 'style.common']) ?>
+        <?= $this->Html->css(['bootstrap.min', 'font-awesome.min', 'datatables.min', 'style.common']) ?>
 
     </head>
 <body class="pace-done">

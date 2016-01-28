@@ -45,6 +45,7 @@ class UsersController extends AppController
      * passhash: $2y$10$y563a3JljMAs6eTl1l22h.8NXUNSfUdPi3.hmEb5kKaoa81wDwK0S
      *
      * pass: adminP: $2y$10$xzVOLVHcVndquW2HJcqJF.B2MG6vFX/670mTka9JUI3AYd2w5Xr/u
+     * pass: xain, %)1E$MDKXD2 | $2y$10$YFAHAihkycLsyjSsjxNRJ.pqLcBE8W5w2Sg3ZmFKeRY.pzqReeP7i
      */
     public function login() {
         if ($this->request->is('post')) {

@@ -191,7 +191,7 @@ class UsersController extends AppController
      * @return void
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function view($id = null)
+    public function profile($id = null)
     {
         $user = $this->Users->get($id, [
             'contain' => ['Positions', 'Skills', 'Specializations']
@@ -222,6 +222,8 @@ class UsersController extends AppController
         $specializations = $this->Users->Specializations->find('list', ['limit' => 200]);
         $this->set(compact('user', 'positions', 'skills', 'specializations'));
         $this->set('_serialize', ['user']);
+
+        $this->render('view');
     }
 
     /**

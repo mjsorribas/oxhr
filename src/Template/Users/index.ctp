@@ -81,13 +81,12 @@
                                 <?php foreach ($users as $user): ?>
                                     <tr class="gradeA odd" role="row">
                                         <td class="center"><?= $this->Number->format($user->id) ?></td>
-                                        <td><?= h($user->first_name. ' ' .$user->last_name) ?></td>
+                                        <td><?= $this->Html->link(h($user->first_name. ' ' .$user->last_name), ['action' => 'profile', $user->id]) ?></td>
                                         <td><?= h($user->email) ?></td>
                                         <td><?= h($user->gmail) ?></td>
                                         <td><?= h($user->skype) ?></td>
                                         <td><?= h($user->table_num) ?></td>
                                         <td class="actions">
-                                            <?= $this->Html->link(__('View'), ['action' => 'view', $user->id]) ?>
                                             <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id]) ?>
                                             <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
                                         </td>

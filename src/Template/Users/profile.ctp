@@ -1,3 +1,22 @@
+<div class="wrapper wrapper-content animated fadeInRight">
+    <?= $this->element('Profile/profile-top-line', ['user' => $user]); ?>
+
+    <div class="row">
+        <div class="col-lg-3">
+            <?= $this->element('Profile/left-column', ['user' => $user]); ?>
+        </div>
+
+        <div class="col-lg-5">
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<?php /*
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
@@ -166,3 +185,5 @@
     <?php endif; ?>
     </div>
 </div>
+
+ */ ?>

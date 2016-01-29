@@ -1,4 +1,4 @@
-<?= $this->Html->doctype('html')?>
+<!DOCTYPE html>
 <html>
     <head>
         <?= $this->Html->charset() ?>

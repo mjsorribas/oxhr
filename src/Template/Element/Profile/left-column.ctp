@@ -3,12 +3,8 @@
             <h3>About <?= $user->first_name. ' '.$user->last_name;?></h3>
 
             <p class="small">
-                There are many variations of passages of Lorem Ipsum available, but the majority have
-                suffered alteration in some form, by injected humour, or randomised words which don't.
-                <br>
-                <br>
-                If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't
-                anything embarrassing
+                Описание <br/>
+                Образование
             </p>
 
             <dl>
@@ -18,9 +14,7 @@
                 <dd>12.05.1985</dd>
             </dl>
 
-<?php
-    $contacts = ['email', 'gmail', 'skype'];
-?>
+        <?php  $contacts = ['email', 'gmail', 'skype']; ?>
                 <table class="table">
                     <thead>
                     <tr>
@@ -46,6 +40,21 @@
 
         </div>
     </div>
+
+    <div class="ibox">
+        <div class="ibox-content">
+            <h3><?= __('Карьера в компании');?></h3>
+
+        </div>
+    </div>
+
+    <div class="ibox">
+        <div class="ibox-content">
+            <h3><?= __('Предыдущая карьера');?></h3>
+
+        </div>
+    </div>
+
 
     <!--
     <div class="ibox">
@@ -104,5 +113,3 @@
 
         </div>
     </div>-->
-
-</div>

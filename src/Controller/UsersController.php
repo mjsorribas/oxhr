@@ -34,6 +34,8 @@ class UsersController extends AppController
      */
     public function index()
     {
+        $this->bread_crumbs = ['Users' => null];
+
         $this->set('users', $this->paginate($this->Users));
         $this->set('_serialize', ['users']);
     }
@@ -193,9 +195,18 @@ class UsersController extends AppController
      */
     public function profile($id = null)
     {
+
         $user = $this->Users->get($id, [
             'contain' => ['Positions', 'Skills', 'Specializations']
         ]);
+
+        if (!empty($user)) {
+            $this->bread_crumbs = [
+                'Users' => ['controller' => 'users', 'action' => 'index'],
+                $user->first_name.' '.$user->last_name => null
+            ];
+        }
+
         $this->set('user', $user);
         $this->set('_serialize', ['user']);
     }

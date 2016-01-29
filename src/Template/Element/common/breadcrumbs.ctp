@@ -5,15 +5,16 @@
             <li>
                 <a href="<?= $this->request->webroot;?>">Home</a>
             </li>
-            <li>
-                <a>Forms</a>
-            </li>
-            <li class="active">
-                <strong>Basic Form</strong>
-            </li>
+        <?php foreach($bread_crumbs as $title => $link): ?>
+            <?php if (!empty($link)):?>
+                <li><?= $this->Html->link(__($title), $link)?></li>
+            <?php else: ?>
+                <li class="active"><strong><?= $title;?></strong></li>
+            <?php endif; ?>
+            <?php endforeach; ?>
         </ol>
     </div>
-    <div class="col-lg-2">
+    <!--<div class="col-lg-2">
 
-    </div>
+    </div>-->
 </div>

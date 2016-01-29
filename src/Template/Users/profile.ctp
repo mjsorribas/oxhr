@@ -7,7 +7,7 @@
         </div>
 
         <div class="col-lg-5">
-
+            <?= $this->element('Profile/profile-center-column', ['user' => $user]); ?>
         </div>
 
     </div>

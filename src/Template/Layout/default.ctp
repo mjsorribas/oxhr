@@ -22,15 +22,24 @@
 <div id="wrapper">
     <?= $this->element('common/left-sidebar-menu');?>
     <div id="page-wrapper" class="gray-bg dashbard-1" style="min-height: 100%;">
-        <?= $this->element('common/top-line-menu'); ?>
-        <?= $this->element('common/breadcrumbs', ['page_title'=>$page_title]); ?>
+        <?= $this->element('Common/top-line-menu'); ?>
+        <?= $this->element('Common/breadcrumbs', ['page_title'=>$page_title, 'bread_crumbs'=>$bread_crumbs]); ?>
 
 
         <div class="wrapper wrapper-content animated fadeInRight">
             <?= $this->fetch('content');?>
         </div>
 
+        <footer class="footer">
+            <div class="pull-right">
+                @xainse
+            </div>
+            <div>
+                <strong>&copy;</strong> Onix-Systems 2015&mdash;<?= date('Y');?>
+            </div>
+        </footer>
     </div>
+
 </div>
 </body>
 </html>

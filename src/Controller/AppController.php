@@ -41,6 +41,9 @@ class AppController extends Controller
      */
     public $page_title = "Onix-Systems";
 
+
+    public $bread_crumbs = [];
+
     /**
      * Initialization hook method.
      *
@@ -105,5 +108,6 @@ class AppController extends Controller
 
         $this->set('authUser', $this->Auth->user());
         $this->set('page_title', $this->page_title);
+        $this->set('bread_crumbs', $this->bread_crumbs);
     }
 }

@@ -14,7 +14,4 @@
             <?php endforeach; ?>
         </ol>
     </div>
-    <!--<div class="col-lg-2">
-
-    </div>-->
 </div>

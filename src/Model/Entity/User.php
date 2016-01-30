@@ -64,7 +64,7 @@ class User extends Entity
      * @param $hash
      * @return string
      */
-    public static function getHash($hash = 'onix-hg-systems') {
+    public static function getHash($hash = 'onix-hr-systems') {
         return Security::hash(time() . $hash);
     }
 

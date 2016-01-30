@@ -1,20 +1,3 @@
-<div class="social-feed-box">
-    <div class="ibox-content">
-        <div class="pull-right social-action dropdown">
-            <button data-toggle="dropdown" class="dropdown-toggle btn-white">
-                <i class="fa fa-angle-down"></i>
-            </button>
-            <ul class="dropdown-menu m-t-xs">
-                <li><a href="#">Config</a></li>
-            </ul>
-        </div>
-
-    <h3><?= __('Скилы сотрудника')?></h3>
-
-
-    </div>
-</div>
-
 <div class="ibox">
     <div class="ibox-content">
         <a href="article.html" class="btn-link">

@@ -11,7 +11,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
  */
-class SkillsGroup extends Entity
+class SkillsGroups extends Entity
 {
 
     /**

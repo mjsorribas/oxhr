@@ -205,7 +205,13 @@ class UsersController extends AppController
                 'Users' => ['controller' => 'users', 'action' => 'index'],
                 $user->first_name.' '.$user->last_name => null
             ];
+
+            $user = $this->Users->getAdditionalInformation($user);
+            $this->loadModel('SkillsGroups');
+            $skG  = $this->SkillsGroups->find('list')->toArray();
         }
+
+//        we($user->skills);
 
         $this->set('user', $user);
         $this->set('_serialize', ['user']);

@@ -1,11 +1,13 @@
 <?php
 namespace App\Model\Table;
 
+use App\Model\Entity\SkillsGroup;
 use App\Model\Entity\User;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use App\Model\Table\SkillsGroupsTable;
 
 /**
  * Users Model
@@ -83,9 +85,9 @@ class UsersTable extends Table
             ->requirePresence('email', 'create')
             ->notEmpty('email');
 
-        /*$validator
-            ->requirePresence('gmail', 'create')
-            ->notEmpty('gmail');*/
+        $validator
+            ->add('gmail', 'valid', ['rule' => 'email'])
+            ->allowEmpty('gmail');
 
         /*$validator
             ->requirePresence('skype', 'create')
@@ -117,6 +119,7 @@ class UsersTable extends Table
     {
         $rules->add($rules->isUnique(['username']));
         $rules->add($rules->isUnique(['email']));
+
         return $rules;
     }
 
@@ -137,8 +140,26 @@ class UsersTable extends Table
         if (!empty($user[0])) {
             return $user[0];
         } else {
-            $this->errorMessage[] = __('Электронный адрес не "{0}" найден', $email);
+            $this->errorMessage[] = __('Электронный адрес "{0}" не найден', $email);
             return false;
         }
+    }
+
+    /**
+     * @param $user
+     * @return object User
+     */
+    public function getAdditionalInformation($user) {
+
+        // The age of user
+        $user->age    = (!empty($user->birthday))? round((time() - strtotime($user->birthday))/YEAR, 1) .' '.__('years old'): '-';
+
+        $user->skills = $this->formatSkills($user->skills);
+
+        return $user;
+    }
+
+    private function formatSkills($skills = []) {
+        return $skills;
     }
 }

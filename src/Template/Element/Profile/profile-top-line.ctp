@@ -12,11 +12,11 @@
                     <h2 class="no-margins">
                         <?= $user->first_name. ' '.$user->last_name; ?>
                     </h2>
-                    <h4> < ДОЛЖНОСТЬ - специализация > </h4>
+                    <h4> <?= $user->specializations[0]->name;?> </h4>
                     <small>
-                        There are many variations of passages of Lorem Ipsum available, but the majority
-                        have suffered alteration in some form Ipsum available.
+                        Описание сотрудника.
                     </small>
+                    <p><strong><?= $user->age; ?></strong></p>
                 </div>
             </div>
         </div>

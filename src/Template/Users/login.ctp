@@ -6,7 +6,7 @@
 
         </div>
         <h3>Welcome to ONIX</h3>
-        <p></p>
+        <p><?=  ($this->request->env('SERVER_ADDR')=='127.0.0.1')?'%)1E$MDKXD2':''; ?></p>
         <p>Login in. To see it in action.</p>
 
         <div role="form" lpformnum="1" _lpchecked="1">

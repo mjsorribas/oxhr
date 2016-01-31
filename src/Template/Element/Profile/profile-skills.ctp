@@ -10,16 +10,17 @@
         </div>
 
         <h3><?= __('Скилы сотрудника')?></h3>
-
+        <div class="developers-skills">
 <?php
     if (!empty($user->skills)):
         foreach($user->skills as $item):
-            echo $this->Form->button($item->name, ['type'=>'button', 'class' => 'btn btn-outline btn-primary']);
+            echo $this->Form->button($item->name.' ('.$item->_joinData->level.')', ['type'=>'button', 'class' => 'btn btn-outline btn-primary']);
         endforeach;
     else:
         we('Empty');
     endif;
 ?>
+        </div>
 
     </div>
 </div>

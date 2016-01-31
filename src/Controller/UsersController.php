@@ -50,6 +50,7 @@ class UsersController extends AppController
      * pass: xain, %)1E$MDKXD2 | $2y$10$YFAHAihkycLsyjSsjxNRJ.pqLcBE8W5w2Sg3ZmFKeRY.pzqReeP7i
      */
     public function login() {
+
         if ($this->request->is('post')) {
             $user = $this->Auth->identify();
             if ($user) {
@@ -195,6 +196,8 @@ class UsersController extends AppController
      */
     public function profile($id = null)
     {
+
+//        $this->request
 
         $user = $this->Users->get($id, [
             'contain' => ['Positions', 'Skills', 'Specializations']

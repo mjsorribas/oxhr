@@ -1,11 +1,13 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Skills'), ['controller' => 'Skills', 'action' => 'index']) ?></li>
+<?php foreach ($skillsGrouping as $skill => $item): ?>
+<div style="border: 1px solid #999; display: inline-block; padding: 4px; margin: 0 5px 5px 0;">
+    <strong><?= $skill?></strong><br>
+    <sapn>Developers: (<?= count($item['developers'])?>)</sapn><br>
+    <sapn>Examples: (<?= count($item['info'])?>)</sapn>
 
-    </ul>
-</nav>
+</div>
+<?php endforeach; ?>
+
+<?php /*
 <div class="usersSkills index large-9 medium-8 columns content">
     <h3><?= __('Users Skills') ?></h3>
     <table cellpadding="0" cellspacing="0">
@@ -46,3 +48,4 @@
         <p><?= $this->Paginator->counter() ?></p>
     </div>
 </div>
+*/?>

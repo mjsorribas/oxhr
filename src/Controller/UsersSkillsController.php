@@ -18,11 +18,31 @@ class UsersSkillsController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Users', 'Skills']
+        $this->bread_crumbs = [
+            'Company Skills' => null,
         ];
-        $this->set('usersSkills', $this->paginate($this->UsersSkills));
-        $this->set('_serialize', ['usersSkills']);
+
+        $usersSkills = $this->UsersSkills->find('all', [
+            'contain' => ['Users', 'Skills'],
+            'conditions'    => ['Users.work_finish_date IS' => NULL]
+        ])->toArray();
+
+
+        $skillsGrouping = [];
+
+        foreach ($usersSkills as $item) {
+            $skillsGrouping[$item->skill->name]['skill']   = $item->skill;
+            $skillsGrouping[$item->skill->name]['developers'][] = $item->user;
+            $skillsGrouping[$item->skill->name]['info'][] = [
+                'description'   => $item->description,
+                'project_repo'  => $item->project_repo,
+                'project_link'  => $item->project_link,
+            ];
+        }
+
+//        we($skillsGrouping);
+
+        $this->set('skillsGrouping', $skillsGrouping);
     }
 
     /**

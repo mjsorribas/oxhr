@@ -11,7 +11,6 @@
         <div class="col-lg-5">
             <?= $this->element('Profile/profile-skills', ['user' => $user]); ?>
             <?= $this->element('Profile/profile-center-column', ['user' => $user]); ?>
-
         </div>
 
     </div>

@@ -31,9 +31,7 @@
         </div>
 
         <footer class="footer">
-            <div class="pull-right">
-                @xainse
-            </div>
+            <div class="pull-right">@xainse</div>
             <div>
                 <strong>&copy;</strong> Onix-Systems 2015&mdash;<?= date('Y');?>
             </div>

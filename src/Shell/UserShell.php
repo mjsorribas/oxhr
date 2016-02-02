@@ -19,6 +19,12 @@ class UserShell extends Shell {
     private $spec = [];
 
     /**
+     * Error of validation file
+     * @var array
+     */
+    private $validationErrors = [];
+
+    /**
      * The counter of iterations
      * @var int
      */
@@ -62,15 +68,8 @@ class UserShell extends Shell {
     public function load () {
 
         $filename = null;
-
-        if (empty($this->args[0])) {
-            return $this->out('Error! File name not present');
-        } else {
-            $filename = $this->args[0];
-        }
-
-        if (!file_exists($filename)) {
-            return $this->out('Error! File not exist');
+        if (!$filename = $this->validateFileParam()) {
+            return $this->out(join("\n ", $this->validationErrors));
         }
 
         $handle = fopen($filename, 'r');
@@ -92,9 +91,11 @@ class UserShell extends Shell {
         fclose($handle);
     }
 
+
     /**
      * Парсим строку с данными в структуру для сохранениия в таблицу User
      * @param $txtstring
+     * @return array
      */
     private function parsUserInfo($txtstring) {
         $keys = ['first_name', 'last_name', 'email', 'gmail', 'skype'];
@@ -121,7 +122,8 @@ class UserShell extends Shell {
 
     /**
      * Save user info to the database
-     * @param $user_data
+     * @param array $userInfo
+     * @return bool
      */
     private function saveUserInfo($userInfo = []) {
 
@@ -155,10 +157,6 @@ class UserShell extends Shell {
             }
         }
 
-        /*if (!empty($specId)) {
-            $this->out($spec .': '.$this->spec[$specId]);
-        }*/
-
         if (!empty($specId) && !empty($userId)) {
             $connection = $this->UsersSpecializations->newEntity();
             $connection['user_id'] = $userId;
@@ -173,5 +171,78 @@ class UserShell extends Shell {
 
             return false;
         }
+    }
+
+    /**
+     * Load second file with additional data about employees
+     * File header columns:
+     * - N
+     * - First Name
+     * - Last Name
+     * - Фамилия
+     * - Имя
+     * - Отчество
+     * - uid (nick)
+     * - Дата начала работы
+     * - День рождения
+     * - Домашний телефон
+     * - моб. Телефон
+     * - Адресс
+     * - Локальный email
+     * - Внешний email
+     */
+    public function load2() {
+        $filename = null;
+       if (!$filename = $this->validateFileParam()) {
+           return $this->out(join("\n ", $this->validationErrors));
+       }
+
+        $handle = fopen($filename, 'r');
+        $i = 0;
+        while (!feof($handle)) {
+            $i++;
+            $txtline = fgets($handle, 4096);
+
+            // Pars user data from file line
+            $oneU   = $this->parsUserInfo2($txtline);
+            // Save new user
+            $userId = $this->saveUserInfo($oneU);
+            // Save specialisation
+            $this->saveSpecialisations($userId, $oneU[1]);
+        }
+
+        $this->out('Parsed: '.$i.'. Saved: '.$this->counter);
+
+        fclose($handle);
+    }
+
+
+    private function parsUserInfo2($txtstring) {
+        $keys = [
+            'num', 'first_name', 'last_name', 'first_name_ru', 'last_name_ru', 'father_name_ru',
+            'username', 'work_start_date', 'birthday', 'home_phone', 'phone', 'address', 'localemail', 'email'];
+
+    }
+
+    /**
+     *
+     * @return bool|filename
+     */
+    private function validateFileParam() {
+        $filename = null;
+
+        if (empty($this->args[0])) {
+            $this->validationErrors[] = 'Error! File name not present';
+            return false;
+        } else {
+            $filename = $this->args[0];
+        }
+
+        if (!file_exists($filename)) {
+            $this->validationErrors[] = 'Error! File not exist';
+            return false;
+        }
+
+        return $filename;
     }
 }

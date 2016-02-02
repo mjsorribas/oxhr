@@ -21,8 +21,11 @@ class AddTables extends AbstractMigration
             ->addColumn('last_name',        'string', ['limit' => '32'])
             ->addColumn('first_name_uk',    'string', ['limit' => '32'])
             ->addColumn('last_name_uk',     'string', ['limit' => '32'])
+            ->addColumn('father_name_uk',     'string', ['limit' => '32'])
             ->addColumn('first_name_ru',    'string', ['limit' => '32'])
             ->addColumn('last_name_ru',     'string', ['limit' => '32'])
+            ->addColumn('father_name_ru',     'string', ['limit' => '32'])
+            ->addColumn('address', 'string', ['limit' => 255])
             ->addColumn('phone', 'string', ['limit' => '20'])   //+380 66 777 51 58
             ->addColumn('email', 'string', ['limit' => '150'])
             ->addColumn('gmail', 'string', ['limit' => '150'])

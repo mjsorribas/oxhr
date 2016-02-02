@@ -221,7 +221,11 @@ class UserShell extends Shell {
         $keys = [
             'num', 'first_name', 'last_name', 'first_name_ru', 'last_name_ru', 'father_name_ru',
             'username', 'work_start_date', 'birthday', 'home_phone', 'phone', 'address', 'localemail', 'email'];
+        $result = [];
+        $result = explode(',', $txtstring);
 
+
+        we($result);
     }
 
     /**

@@ -19,6 +19,8 @@ use App\Model\Table\SkillsGroupsTable;
 class UsersTable extends Table
 {
 
+    public $errorMessage    = [];
+
     /**
      * Initialize method
      *
@@ -51,6 +53,7 @@ class UsersTable extends Table
             'joinTable' => 'users_specializations'
         ]);
     }
+    // The provided value is invalid
 
     /**
      * Default validation rules.
@@ -93,9 +96,9 @@ class UsersTable extends Table
             ->requirePresence('skype', 'create')
             ->notEmpty('skype');*/
 
-        $validator
+        /*$validator
             ->add('birthday', 'valid', ['rule' => 'date'])
-            ->allowEmpty('birthday');
+            ->allowEmpty('birthday');*/
 
         /*$validator
             ->requirePresence('ssh_key', 'create')
@@ -153,9 +156,7 @@ class UsersTable extends Table
 
         // The age of user
         $user->age    = (!empty($user->birthday))? round((time() - strtotime($user->birthday))/YEAR, 1) .' '.__('years old'): '-';
-
         $user->skills = $this->formatSkills($user->skills);
-
         return $user;
     }
 

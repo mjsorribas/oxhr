@@ -80,8 +80,10 @@ class UserShell extends Shell {
 
             // Pars user data from file line
             $oneU   = $this->parsUserInfo($txtline);
+
             // Save new user
             $userId = $this->saveUserInfo($oneU);
+
             // Save specialisation
             $this->saveSpecialisations($userId, $oneU[1]);
         }
@@ -127,14 +129,29 @@ class UserShell extends Shell {
      */
     private function saveUserInfo($userInfo = []) {
 
-        $user = $this->Users->newEntity();
-        $user = $this->Users->patchEntity($user, $userInfo);
+//        $this->out(print_r($userInfo));
+        if (!empty($userInfo['email'])) {
+            $this->out($userInfo['email']);
+
+            $user = $this->Users->getByEmail($userInfo['email']);
+            if (!empty($user)) {
+                $user = $this->Users->patchEntity($user, $userInfo);
+            } else {
+                $user = $this->Users->newEntity();
+            }
+        } else {
+            $user = $this->Users->newEntity();
+        }
+
+        //$user = $this->Users->patchEntity($user, $userInfo);
         if ($this->Users->save($user)) {
             $this->counter++;
             return $user['id'];
         } else {
             $this->out('Error! User not saved: ' . $userInfo['email']);
             $this->out(print_r($user));
+            $this->out(print_r($this->Users));
+            we();
         }
 
         return false;
@@ -190,6 +207,8 @@ class UserShell extends Shell {
      * - Адресс
      * - Локальный email
      * - Внешний email
+     *
+       bin\cake user load2 tmp\onix_ldpa_personal-2-numbers.csv
      */
     public function load2() {
         $filename = null;
@@ -205,10 +224,12 @@ class UserShell extends Shell {
 
             // Pars user data from file line
             $oneU   = $this->parsUserInfo2($txtline);
+
             // Save new user
             $userId = $this->saveUserInfo($oneU);
+
             // Save specialisation
-            $this->saveSpecialisations($userId, $oneU[1]);
+//            $this->saveSpecialisations($userId, $oneU[1]);
         }
 
         $this->out('Parsed: '.$i.'. Saved: '.$this->counter);
@@ -216,16 +237,29 @@ class UserShell extends Shell {
         fclose($handle);
     }
 
-
+    /**
+     * Pars string from CSV file from OLDAP
+     * @param $txtstring
+     * @return array
+     */
     private function parsUserInfo2($txtstring) {
         $keys = [
             'num', 'first_name', 'last_name', 'first_name_ru', 'last_name_ru', 'father_name_ru',
             'username', 'work_start_date', 'birthday', 'home_phone', 'phone', 'address', 'localemail', 'email'];
-        $result = [];
-        $result = explode(',', $txtstring);
+        $result = []; // birthday
 
+        $tmp = explode(',', $txtstring);
 
-        we($result);
+        foreach($keys as $index=>$key) {
+            if (!empty($tmp[$index])) {
+                $result[$key] = $tmp[$index];
+            }
+        }
+
+        unset($result["num"]);
+        unset($result["localemail"]);
+
+        return $result;
     }
 
     /**

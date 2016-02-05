@@ -194,10 +194,7 @@ class UsersController extends AppController
      * @return void
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function profile($id = null)
-    {
-
-//        $this->request
+    public function profile($id = null) {
 
         $user = $this->Users->get($id, [
             'contain' => ['Positions', 'Skills', 'Specializations']

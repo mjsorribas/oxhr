@@ -12,7 +12,7 @@
                     <h2 class="no-margins">
                         <?= $user->first_name. ' '.$user->last_name; ?>
                     </h2>
-                    <h4> <?= $user->specializations[0]->name;?> </h4>
+                    <h4> <?= @$user->specializations[0]->name;?> </h4>
                     <small>
                         Описание сотрудника.
                     </small>
@@ -27,27 +27,26 @@
             <tbody>
             <tr>
                 <td>
-                    <strong>142</strong> Projects
+                    <strong>&mdash;</strong> Projects
                 </td>
                 <td>
-                    <strong>22</strong> Followers
-                </td>
-
-            </tr>
-            <tr>
-                <td>
-                    <strong>61</strong> Comments
-                </td>
-                <td>
-                    <strong>54</strong> Articles
+                    <strong>&mdash;</strong> Followers
                 </td>
             </tr>
             <tr>
                 <td>
-                    <strong>154</strong> Tags
+                    <strong>&mdash;</strong> Comments
                 </td>
                 <td>
-                    <strong>32</strong> Friends
+                    <strong>&mdash;</strong> Articles
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>&mdash;</strong> Tags
+                </td>
+                <td>
+                    <strong>&mdash;</strong> Friends
                 </td>
             </tr>
             </tbody>

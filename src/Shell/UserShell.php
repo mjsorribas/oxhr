@@ -100,6 +100,7 @@ class UserShell extends Shell {
      * @return array
      */
     private function parsUserInfo($txtstring) {
+//        $this->out($txtstring);
         $keys = ['first_name', 'last_name', 'email', 'gmail', 'skype'];
         $result = [];
         $result = explode(',', $txtstring);
@@ -129,28 +130,31 @@ class UserShell extends Shell {
      */
     private function saveUserInfo($userInfo = []) {
 
-//        $this->out(print_r($userInfo));
+        if (empty($userInfo['password'])) {
+            $userInfo['password'] = 'empty_password';
+        }
+
         if (!empty($userInfo['email'])) {
-            $this->out($userInfo['email']);
 
             $user = $this->Users->getByEmail($userInfo['email']);
             if (!empty($user)) {
-                $user = $this->Users->patchEntity($user, $userInfo);
+
             } else {
                 $user = $this->Users->newEntity();
+                $this->out(print_r($userInfo));
+                $this->out('New #1: ' . $userInfo['email']);
             }
         } else {
-            $user = $this->Users->newEntity();
+            return $this->out('New #2: ');
         }
 
-        //$user = $this->Users->patchEntity($user, $userInfo);
+        $user = $this->Users->patchEntity($user, $userInfo);
         if ($this->Users->save($user)) {
             $this->counter++;
             return $user['id'];
         } else {
             $this->out('Error! User not saved: ' . $userInfo['email']);
             $this->out(print_r($user));
-            $this->out(print_r($this->Users));
             we();
         }
 
@@ -252,7 +256,7 @@ class UserShell extends Shell {
 
         foreach($keys as $index=>$key) {
             if (!empty($tmp[$index])) {
-                $result[$key] = $tmp[$index];
+                $result[$key] = trim($tmp[$index]);
             }
         }
 

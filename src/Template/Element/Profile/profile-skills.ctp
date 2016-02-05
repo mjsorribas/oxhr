@@ -16,10 +16,9 @@
         foreach($user->skills as $item):
             echo $this->Form->button($item->name.' ('.$item->_joinData->level.')', ['type'=>'button', 'class' => 'btn btn-outline btn-primary']);
         endforeach;
-    else:
-        we('Empty');
-    endif;
-?>
+    else: ?>
+    <h4><?= __('Скилы пользователя не заполнены');?></h4>
+<?php endif; ?>
         </div>
 
     </div>

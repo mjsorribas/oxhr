@@ -155,8 +155,12 @@ class UsersTable extends Table
     public function getAdditionalInformation($user) {
 
         // The age of user
-        $user->age    = (!empty($user->birthday))? round((time() - strtotime($user->birthday))/YEAR, 1) .' '.__('years old'): '-';
+        $user->age    = (!empty($user->birthday))? round((time() - strtotime($user->birthday))/YEAR, 1): '&mdash;';
+        // Users skills
         $user->skills = $this->formatSkills($user->skills);
+        // Work in company
+        $user->year_in_company = (!empty($user->work_start_date))? round((time() - strtotime($user->work_start_date))/YEAR, 1): '&mdash;';
+
         return $user;
     }
 

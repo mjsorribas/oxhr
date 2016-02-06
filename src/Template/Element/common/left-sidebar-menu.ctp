@@ -34,12 +34,12 @@
     $main_menu = [
         'Company Skills'    => [
             'icon'  => '<i class="fa fa-bar-chart-o"></i>',
-            'label' => 'Company Skills',
+            'label' => __('Company Skills'),
             'link'  => ['controller' => 'users-skills'],
             ],
         'Users' => [
             'icon'  => '<i class="fa fa-child"></i>',
-            'label' => 'Users',
+            'label' => __('Employees'),
             'link'  => ['controller' => 'users', 'action' => 'index'],
         ]
     ];
@@ -49,7 +49,6 @@
             <?= $this->Html->link($item['icon'].'&nbsp;'.__($item['label']), $item['link'], ['escape' => false]);?>
         </li>
     <?php endforeach; ?>
-
             <!--<li class="active">
                 <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Graphs</span><span class="fa arrow"></span></a>
             </li>

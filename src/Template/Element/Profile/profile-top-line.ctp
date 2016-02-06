@@ -12,11 +12,11 @@
                     <h2 class="no-margins">
                         <?= $user->first_name. ' '.$user->last_name; ?>
                     </h2>
-                    <h4> <?= @$user->specializations[0]->name;?> </h4>
+                    <h4> <?= !empty($user->specializations[0]->name)?$user->specializations[0]->name:'- '.__('должность не установленна').' -';?> </h4>
                     <small>
                         Описание сотрудника.
                     </small>
-                    <p><strong><?= $user->age; ?></strong></p>
+                    <p></p>
                 </div>
             </div>
         </div>
@@ -27,10 +27,10 @@
             <tbody>
             <tr>
                 <td>
-                    <strong>&mdash;</strong> Projects
+                    <strong><?= $user->year_in_company?></strong> <?= __('years in company');?>
                 </td>
                 <td>
-                    <strong>&mdash;</strong> Followers
+                    <strong><?= $user->age; ?></strong> <?= __('age');?>
                 </td>
             </tr>
             <tr>

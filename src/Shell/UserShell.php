@@ -147,8 +147,21 @@ class UserShell extends Shell {
         } else {
             return $this->out('New #2: ');
         }
+        if (!empty($userInfo['work_start_date'])) {
+            $user->work_start_date = $userInfo['work_start_date'];
+        }
+        $user = $this->Users->patchEntity($user, $userInfo);                
+        
+// Debug -------
 
-        $user = $this->Users->patchEntity($user, $userInfo);
+        if ($userInfo['email'] == 'maxim.honcharov@onix-systems.com') {
+            wln($userInfo);
+            we($user);
+        } else {
+            return 0;
+        }
+
+// Debug End ---
         if ($this->Users->save($user)) {
             $this->counter++;
             return $user['id'];
@@ -215,7 +228,8 @@ class UserShell extends Shell {
        bin\cake user load2 tmp\onix_ldpa_personal-2-numbers.csv
      */
     public function load2() {
-        $filename = null;
+        
+       $filename = null;
        if (!$filename = $this->validateFileParam()) {
            return $this->out(join("\n ", $this->validationErrors));
        }
@@ -228,7 +242,7 @@ class UserShell extends Shell {
 
             // Pars user data from file line
             $oneU   = $this->parsUserInfo2($txtline);
-
+        
             // Save new user
             $userId = $this->saveUserInfo($oneU);
 
@@ -259,6 +273,12 @@ class UserShell extends Shell {
                 $result[$key] = trim($tmp[$index]);
             }
         }
+        if (!empty($result['work_start_date'])) {
+            $work_start_date = date('Y-m-d H:i:s',strtotime($result['work_start_date']));        
+    //        $this->out($work_start_date);
+            $result['work_start_date'] = $work_start_date; 
+            //$result['work_start_date'] = new Time($result['work_start_date']);   
+        }        
 
         unset($result["num"]);
         unset($result["localemail"]);

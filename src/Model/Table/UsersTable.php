@@ -1,13 +1,11 @@
 <?php
 namespace App\Model\Table;
 
-use App\Model\Entity\SkillsGroup;
 use App\Model\Entity\User;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use App\Model\Table\SkillsGroupsTable;
 
 /**
  * Users Model
@@ -53,7 +51,6 @@ class UsersTable extends Table
             'joinTable' => 'users_specializations'
         ]);
     }
-    // The provided value is invalid
 
     /**
      * Default validation rules.
@@ -84,25 +81,55 @@ class UsersTable extends Table
             ->notEmpty('last_name');
 
         $validator
+            ->allowEmpty('first_name_uk');
+
+        $validator
+            ->allowEmpty('last_name_uk');
+
+        $validator
+            ->allowEmpty('first_name_ru');
+
+        $validator
+            ->allowEmpty('last_name_ru');
+
+        $validator            
+            ->allowEmpty('phone');
+
+        $validator
             ->add('email', 'valid', ['rule' => 'email'])
             ->requirePresence('email', 'create')
             ->notEmpty('email');
 
-        $validator
-            ->add('gmail', 'valid', ['rule' => 'email'])
+        $validator            
             ->allowEmpty('gmail');
 
-        /*$validator
-            ->requirePresence('skype', 'create')
-            ->notEmpty('skype');*/
+        $validator            
+            ->allowEmpty('skype');
 
-        /*$validator
-            ->add('birthday', 'valid', ['rule' => 'date'])
-            ->allowEmpty('birthday');*/
+        $validator            
+            ->allowEmpty('social_fb');
 
-        /*$validator
-            ->requirePresence('ssh_key', 'create')
-            ->notEmpty('ssh_key');*/
+        $validator
+            ->add('official', 'valid', ['rule' => 'boolean'])            
+            ->allowEmpty('official');
+
+        $validator
+            ->add('work_start_date', 'valid', ['rule' => 'datetime'])            
+            ->allowEmpty('work_start_date');
+
+        $validator
+            ->add('work_finish_date', 'valid', ['rule' => 'datetime'])
+            ->allowEmpty('work_finish_date');
+
+        $validator
+            ->add('birthday', 'valid', ['rule' => 'datetime'])            
+            ->allowEmpty('birthday');
+
+        $validator            
+            ->allowEmpty('ssh_key');
+
+        $validator
+            ->allowEmpty('hash');
 
         $validator
             ->add('table_num', 'valid', ['rule' => 'numeric'])
@@ -122,10 +149,9 @@ class UsersTable extends Table
     {
         $rules->add($rules->isUnique(['username']));
         $rules->add($rules->isUnique(['email']));
-
         return $rules;
     }
-
+    
     /**
      * Find user by email or gmail
      * @param $email
@@ -147,8 +173,8 @@ class UsersTable extends Table
             return false;
         }
     }
-
-    /**
+    
+     /**
      * @param $user
      * @return object User
      */

@@ -9,6 +9,7 @@
 namespace App\Shell;
 
 use Cake\Console\Shell;
+use Cake\I18n\Time;
 
 class UserShell extends Shell {
 
@@ -147,20 +148,18 @@ class UserShell extends Shell {
         } else {
             return $this->out('New #2: ');
         }
-        if (!empty($userInfo['work_start_date'])) {
-            $user->work_start_date = $userInfo['work_start_date'];
-        }
+        
         $user = $this->Users->patchEntity($user, $userInfo);                
         
 // Debug -------
-
+/*
         if ($userInfo['email'] == 'maxim.honcharov@onix-systems.com') {
             wln($userInfo);
             we($user);
         } else {
             return 0;
         }
-
+*/
 // Debug End ---
         if ($this->Users->save($user)) {
             $this->counter++;
@@ -239,13 +238,10 @@ class UserShell extends Shell {
         while (!feof($handle)) {
             $i++;
             $txtline = fgets($handle, 4096);
-
             // Pars user data from file line
             $oneU   = $this->parsUserInfo2($txtline);
-        
             // Save new user
             $userId = $this->saveUserInfo($oneU);
-
             // Save specialisation
 //            $this->saveSpecialisations($userId, $oneU[1]);
         }
@@ -264,6 +260,7 @@ class UserShell extends Shell {
         $keys = [
             'num', 'first_name', 'last_name', 'first_name_ru', 'last_name_ru', 'father_name_ru',
             'username', 'work_start_date', 'birthday', 'home_phone', 'phone', 'address', 'localemail', 'email'];
+        $keys_date = ['birthday', 'work_start_date'];
         $result = []; // birthday
 
         $tmp = explode(',', $txtstring);
@@ -271,15 +268,13 @@ class UserShell extends Shell {
         foreach($keys as $index=>$key) {
             if (!empty($tmp[$index])) {
                 $result[$key] = trim($tmp[$index]);
+                
+                if (in_array($key, $keys_date)) {   // Parse date
+                    $result[$key] = new Time($result[$key]); 
+                }
             }
         }
-        if (!empty($result['work_start_date'])) {
-            $work_start_date = date('Y-m-d H:i:s',strtotime($result['work_start_date']));        
-    //        $this->out($work_start_date);
-            $result['work_start_date'] = $work_start_date; 
-            //$result['work_start_date'] = new Time($result['work_start_date']);   
-        }        
-
+        
         unset($result["num"]);
         unset($result["localemail"]);
 

@@ -40,7 +40,7 @@ class UsersSkillsController extends AppController
             ];
         }
 
-//        we($skillsGrouping);
+        we($skillsGrouping);
 
         $this->set('skillsGrouping', $skillsGrouping);
     }

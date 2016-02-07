@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\ORM\TableRegistry;
 
 /**
  * UsersSkills Controller
@@ -24,25 +25,19 @@ class UsersSkillsController extends AppController
 
         $usersSkills = $this->UsersSkills->find('all', [
             'contain' => ['Users', 'Skills'],
-            'conditions'    => ['Users.work_finish_date IS' => NULL]
+            'recursive' => 2,
+            'conditions'    => ['Users.work_finish_date IS' => NULL]    //For currens users
         ])->toArray();
 
+        // Get Skills Groups list
+        $SkillsGroups = $this->getSGroup();
 
-        $skillsGrouping = [];
-
-        foreach ($usersSkills as $item) {
-            $skillsGrouping[$item->skill->name]['skill']   = $item->skill;
-            $skillsGrouping[$item->skill->name]['developers'][] = $item->user;
-            $skillsGrouping[$item->skill->name]['info'][] = [
-                'description'   => $item->description,
-                'project_repo'  => $item->project_repo,
-                'project_link'  => $item->project_link,
-            ];
-        }
-
-        we($skillsGrouping);
-
-        $this->set('skillsGrouping', $skillsGrouping);
+        $this->set(compact('usersSkills', 'SkillsGroups'));
+        
+        // Прикрутить к таблице поиск разный
+        // https://www.google.com.ua/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q=bootstrap%20widget%20table%20search
+        //  - https://github.com/lukaskral/bootstrap-table-filter
+        //  - https://github.com/wenzhixin/bootstrap-table/tree/master/src/extensions/filter
     }
 
     /**
@@ -135,5 +130,18 @@ class UsersSkillsController extends AppController
      */
     public function mySkills() {
 
+    }
+    
+    
+    private function getSGroup() {
+        $SkillsGroups = TableRegistry::get('SkillsGroups');
+        $list = [];
+        $tmp_list = $SkillsGroups->find('list')->select(['id', 'name']);
+        
+        foreach ($tmp_list as $key => $item) {            
+            $list[$key] = $item;
+        }
+                
+        return $list;
     }
 }

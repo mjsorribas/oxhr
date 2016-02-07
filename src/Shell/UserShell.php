@@ -151,25 +151,14 @@ class UserShell extends Shell {
         
         $user = $this->Users->patchEntity($user, $userInfo);                
         
-// Debug -------
-/*
-        if ($userInfo['email'] == 'maxim.honcharov@onix-systems.com') {
-            wln($userInfo);
-            we($user);
-        } else {
-            return 0;
-        }
-*/
-// Debug End ---
         if ($this->Users->save($user)) {
             $this->counter++;
             return $user['id'];
         } else {
             $this->out('Error! User not saved: ' . $userInfo['email']);
             $this->out(print_r($user));
-            we();
+            return false;
         }
-
         return false;
     }
 

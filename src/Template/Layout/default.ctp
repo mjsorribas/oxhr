@@ -25,7 +25,7 @@
         <?= $this->element('Common/top-line-menu'); ?>
         <?= $this->element('Common/breadcrumbs', ['page_title'=>$page_title, 'bread_crumbs'=>$bread_crumbs]); ?>
 
-        <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row wrapper wrapper-content animated fadeInRight">
             <?= $this->fetch('content');?>
         </div>
 

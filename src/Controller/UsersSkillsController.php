@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
+use Cake\Collection\Collection;
 
 /**
  * UsersSkills Controller
@@ -24,15 +25,19 @@ class UsersSkillsController extends AppController
         ];
 
         $usersSkills = $this->UsersSkills->find('all', [
-            'contain' => ['Users', 'Skills'],
-            'recursive' => 2,
-            'conditions'    => ['Users.work_finish_date IS' => NULL]    //For currens users
+            'contain'       => ['Users', 'Skills'],
+            'recursive'     => 2,
+            'conditions'    => ['Users.work_finish_date IS' => NULL],    //For currens users
+            'limit'         => 1000
         ])->toArray();
 
         // Get Skills Groups list
         $SkillsGroups = $this->getSGroup();
-
-        $this->set(compact('usersSkills', 'SkillsGroups'));
+        
+        // Extract data from users skills                
+        $users = $this->getUsersList($usersSkills);
+                
+        $this->set(compact('usersSkills', 'SkillsGroups', 'users'));
         
         // Прикрутить к таблице поиск разный
         // https://www.google.com.ua/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q=bootstrap%20widget%20table%20search
@@ -143,5 +148,18 @@ class UsersSkillsController extends AppController
         }
                 
         return $list;
+    }
+    
+    /**
+     * Get list of uniq users from list of skills  
+     */
+    private function getUsersList($usersSkills) {
+       $users = []; 
+       //we($usersSkills[0]);
+       foreach ($usersSkills as $item) {
+           $users[$item['user']['id']] = $item['user']['first_name'].' '.$item['user']['last_name'];
+       }
+       asort($users);
+       return $users;
     }
 }

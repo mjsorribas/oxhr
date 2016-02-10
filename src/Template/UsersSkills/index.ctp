@@ -37,7 +37,16 @@
                         <th class="sorting" tabindex="0" aria-controls="editable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style=""><?= __('Skills')?></th>
                         <th class="sorting" tabindex="0" aria-controls="editable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style=""><?= __('Level')?></th>                        
                         <th class="sorting" tabindex="0" aria-controls="editable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style=""><?= __('Sources')?></th> 
-                    </tr>   
+                    </tr>
+                    <tr>
+                        <td>
+                            <?= $this->Form->input('select_user', ['options' => $users, 'label'=>false, 'id'=>'usersFilter', 'empty' => '- user - ', 'default' => null]);?>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
                 </thead>
                 <tbody>
                     <?php if (!empty($usersSkills)):  $i=0;?>                    
@@ -80,3 +89,9 @@
         <!-- END Col-lg-9 -->
    </div>
 </div>
+<script>
+$(function(){
+    $("#usersFilter").select2({});
+});    
+</script>
+    

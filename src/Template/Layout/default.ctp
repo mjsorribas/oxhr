@@ -7,8 +7,10 @@
 
         <title><?= $this->fetch('title') ?></title>
         <?= $this->Html->meta('icon') ?>
-        <?= $this->Html->css(['bootstrap.min', 'font-awesome.min', 'datatables.min', 'style.common', 'onixhrs']) ?>
+        <?= $this->Html->css(['bootstrap.min', 'font-awesome.min', 'datatables.min', 'plugins/select2.min', 'style.common', 'onixhrs']) ?>
+        <?= $this->Html->script(['jquery.min.2.1.4', 'bootstrap.min', 'plugins/select2.full.min']);?>
 
+        <?= $this->fetch('script');?>
     </head>
 <body class="pace-done">
 

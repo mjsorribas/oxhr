@@ -30,45 +30,43 @@
             <table class="table table-striped table-bordered table-hover  dataTable" id="editable" role="grid" aria-describedby="editable_info">
                 <thead>
                     <tr role="row">
-                        <th class="sorting_asc" tabindex="0" aria-controls="editable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
+                        <th class="sorting_asc" tabindex="0" aria-controls="editable" rowspan="1" colspan="1" style="width:130px;" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
                             <?= __('Name')?>
                         </th>
-                        <th class="sorting" tabindex="0" aria-controls="editable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style=""><?= __('Groups')?></th>
-                        <th class="sorting" tabindex="0" aria-controls="editable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style=""><?= __('Skills')?></th>
-                        <th class="sorting" tabindex="0" aria-controls="editable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style=""><?= __('Level')?></th>                        
+                        <th class="sorting" tabindex="0" aria-controls="editable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width:136px;"><?= __('Groups')?></th>
+                        <th class="sorting" tabindex="0" aria-controls="editable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width:157px;"><?= __('Skills')?></th>
+                        <th class="sorting" tabindex="0" aria-controls="editable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width:35px;"><?= __('Level')?></th>                        
                         <th class="sorting" tabindex="0" aria-controls="editable" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style=""><?= __('Sources')?></th> 
                     </tr>
                     <tr>
-                        <td>
-                            <?= $this->Form->input('select_user', ['options' => $users, 'label'=>false, 'id'=>'usersFilter', 'empty' => '- user - ', 'default' => null]);?>
+                        <td class="table-select">
+                            <?= $this->Form->input('select_user', ['options' => $users, 'label'=>false, 'id'=>'usersFilter', 'empty' => '- All - ', 'default' => null]);?>
                         </td>
-                        <td></td>
-                        <td></td>
+                        <td>
+                            <?= $this->Form->input('select_group', ['options' => $skillsGroups, 'label'=>false, 'id'=>'groupFilter', 'empty' => '- All - ', 'default' => null]);?>
+                        </td>
+                        <td>
+                            <?= $this->Form->input('select_skills', ['options' => $skills, 'label'=>false, 'id'=>'skillsFilter', 'empty' => '- All - ', 'default' => null]);?>
+                        </td>
                         <td></td>
                         <td></td>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (!empty($usersSkills)):  $i=0;?>                    
+                    <?php if (!empty($usersSkills)):  $i=0;?>
                     <?php foreach ($usersSkills as $num => $item): ?>   
                     <?php //we($item)?>                                     
                     <tr class="gradeA odd" role="row">
-                        <td><?= $this->Html->link($item['user']->first_name.' '.$item['user']->last_name, ['controller'=>'users', 'action'=>'view', $item['user']->username]);?></td>
-                        <td><?= $SkillsGroups[$item['skill']->skills_groups_id]?></td>
+                        <td class="user-id-<?= $item['user']->id?>"><?= $this->Html->link($item['user']->first_name.' '.$item['user']->last_name, ['controller'=>'users', 'action'=>'view', $item['user']->username]);?></td>
+                        <td><?= !empty($skillsGroups[$item['skill']->skills_groups_id])?$skillsGroups[$item['skill']->skills_groups_id]:$item['skill']->skills_groups_id?></td>
                         <td><?= $this->Html->link($item['skill']->name, $item['skill']->link, ['target'=>'_blank'])?></td>
                         <td class="center"><?= $item['level']?></td>
                         <td><?= $item['description'];?></td>
-                        <?php /*
-                        <div class="btn btn-outline btn-success one-skill-button" 
-                            data-developers="" data-skill-description="">
-                            <?= $skill?> <sapn title="Developers:"><?= count($item['developers'])?></sapn>, <sapn title="Examples:"><?= count($item['info'])?></sapn>
-                        </div>
-                        */ ?>
                     </tr>
                     <?php endforeach; ?>                    
                     <?php else: ?>
                     
-                    <?php endif ?>
+                    <?php endif;  ?>
                 </tbody>
                 <tfoot>
                     <tr>
@@ -91,7 +89,20 @@
 </div>
 <script>
 $(function(){
-    $("#usersFilter").select2({});
+    $("#usersFilter, #groupFilter, #skillsFilter").select2({});
+    
+    $("#usersFilter").change(function(){
+        var userId = $(this).val()*1; 
+        var rowClass = "tr.odd";
+        
+        if (userId > 0 ) {
+            $(rowClass).hide();
+            $(".user-id-"+userId).parent(rowClass).show();
+        } else {
+            $(rowClass).show();
+        }
+                
+    });
 });    
 </script>
     

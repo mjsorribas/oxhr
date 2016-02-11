@@ -1,3 +1,10 @@
 .developers-skills .one-skill-button {
     margin: 0 5px 5px 0;
 }
+
+.table-select .form-group {
+    margin-bottom: 0;
+}
+.center {
+    text-align: center;
+}

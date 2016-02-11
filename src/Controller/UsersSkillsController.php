@@ -25,6 +25,7 @@ class UsersSkillsController extends AppController
         ];
 
         $usersSkills = $this->UsersSkills->find('all', [
+//            'contain'       => ['Users', 'Skills'],
             'contain'       => ['Users', 'Skills'],
             'recursive'     => 2,
             'conditions'    => ['Users.work_finish_date IS' => NULL],    //For currens users
@@ -32,13 +33,16 @@ class UsersSkillsController extends AppController
         ])->toArray();
 
         // Get Skills Groups list
-        $SkillsGroups = $this->getSGroup();
+        $skillsGroups = $this->getSGroup();
+
+        // Get group 
+        $skills = $this->getSkillsList($usersSkills);
         
         // Extract data from users skills                
         $users = $this->getUsersList($usersSkills);
                 
-        $this->set(compact('usersSkills', 'SkillsGroups', 'users'));
-        
+        $this->set(compact('usersSkills', 'skillsGroups', 'skills', 'users'));
+
         // Прикрутить к таблице поиск разный
         // https://www.google.com.ua/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q=bootstrap%20widget%20table%20search
         //  - https://github.com/lukaskral/bootstrap-table-filter
@@ -137,7 +141,9 @@ class UsersSkillsController extends AppController
 
     }
     
-    
+    /**
+     * Index of Skills Groups
+     */
     private function getSGroup() {
         $SkillsGroups = TableRegistry::get('SkillsGroups');
         $list = [];
@@ -146,9 +152,21 @@ class UsersSkillsController extends AppController
         foreach ($tmp_list as $key => $item) {            
             $list[$key] = $item;
         }
-                
+        asort($list);
         return $list;
     }
+    
+    /**
+     * Get list of Skills from skills
+     */
+    private function getSkillsList($usersSkills) {
+        $skills = [];        
+        foreach ($usersSkills as $item) {            
+            $skills[$item['skill']->id] = $item['skill']->name;
+        }
+        asort($skills);
+        return $skills;
+    }    
     
     /**
      * Get list of uniq users from list of skills  

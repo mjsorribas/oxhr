@@ -27,7 +27,7 @@
             <!-- END Block Title -->            
             <!-- Content Block -->
             <div class="ibox-content">
-            <table class="table table-striped table-bordered table-hover  dataTable" id="editable" role="grid" aria-describedby="editable_info">
+            <table id="company-skills" class="table table-striped table-bordered table-hover  dataTable" id="editable" role="grid" aria-describedby="editable_info">
                 <thead>
                     <tr role="row">
                         <th class="sorting_asc" tabindex="0" aria-controls="editable" rowspan="1" colspan="1" style="width:130px;" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
@@ -58,8 +58,8 @@
                     <?php //we($item)?>                                     
                     <tr class="gradeA odd" role="row">
                         <td class="user-id-<?= $item['user']->id?>"><?= $this->Html->link($item['user']->first_name.' '.$item['user']->last_name, ['controller'=>'users', 'action'=>'view', $item['user']->username]);?></td>
-                        <td><?= !empty($skillsGroups[$item['skill']->skills_groups_id])?$skillsGroups[$item['skill']->skills_groups_id]:$item['skill']->skills_groups_id?></td>
-                        <td><?= $this->Html->link($item['skill']->name, $item['skill']->link, ['target'=>'_blank'])?></td>
+                        <td class="sgroup-id-<?= $item['skill']->skills_groups_id;?>"><?= !empty($skillsGroups[$item['skill']->skills_groups_id])?$skillsGroups[$item['skill']->skills_groups_id]:$item['skill']->skills_groups_id?></td>
+                        <td class="skill-id-<?= $item['skill']->id?>"><?= $this->Html->link($item['skill']->name, $item['skill']->link, ['target'=>'_blank'])?></td>
                         <td class="center"><?= $item['level']?></td>
                         <td><?= $item['description'];?></td>
                     </tr>
@@ -89,7 +89,7 @@
 </div>
 <script>
 $(function(){
-    $("#usersFilter, #groupFilter, #skillsFilter").select2({});
+   /* $("#usersFilter, #groupFilter, #skillsFilter").select2({});
     
     $("#usersFilter").change(function(){
         var userId = $(this).val()*1; 
@@ -101,8 +101,102 @@ $(function(){
         } else {
             $(rowClass).show();
         }
-                
-    });
-});    
+    });*/
+    sklTbl.initRunFilter();
+});
+
+/**
+ * Класс обработки поиска в таблице Скилов
+ * @type {{}}
+ */
+var sklTbl = {
+
+    // Selected user id from select-input field
+    userID:      '',
+    inputUserID: '#usersFilter',
+    prefixUserID: '.user-id-',
+
+    // Selected Skill Group id
+    sGroupID: '',
+    inputSkillGroupID: '#groupFilter',
+    prefixSGroupID: '.sgroup-id-',
+
+    // Selected Skill id Group
+    skillID : '',
+    inputSkillID: '#skillsFilter',
+    prefixSkillID: '.skill-id-',
+
+    // Skills Table ID
+    sklTblID: '#company-skills',
+
+    // Row class
+    oneRowClass: 'tr.odd',
+
+    initRunFilter: function() {
+        var inputs = [
+          this.inputUserID,
+          this.inputSkillGroupID,
+          this.inputSkillID
+        ];
+        $( inputs.join(',')).change(function(){
+            sklTbl.filterTbl();
+        });
+    },
+
+    /**
+     * Filtering the table
+     */
+    filterTbl: function () {
+        $(this.sklTblID+' '+this.oneRowClass).hide();
+        $(this.getFilterSelector()).parent(this.oneRowClass).show();
+    },
+
+    /**
+     *  Show all users skills
+     */
+    clearFilter: function() {
+        $(this.sklTblID+' '+this.oneRowClass).show();
+    },
+
+    /**
+     * Prepare selector to select the row to show
+     */
+    getFilterSelector: function() {
+
+        this.getFilteredValue();
+
+        var selector = [];
+
+        if (this.userID != '') {
+            selector.push(this.prefixUserID + this.userID);
+        }
+
+        if (this.sGroupID != '') {
+            selector.push(this.prefixSGroupID + this.sGroupID);
+        }
+
+        if (this.skillID != '') {
+            selector.push(this.prefixSkillID + this.skillID);
+        }
+
+        selector = selector.join(',');
+        console.log(selector);
+        return selector;
+    },
+
+    /**
+     * Get data for filter
+     */
+    getFilteredValue: function () {
+        // Get filter by user ID
+        this.userID     = $(sklTbl.inputUserID).val();
+        // Get filter by Skill Group ID
+        this.sGroupID   = $(sklTbl.inputSkillGroupID).val();
+        // Get filter by Skill ID
+        this.skillID    = $(sklTbl.inputSkillID).val();
+
+    }
+
+};
 </script>
     
